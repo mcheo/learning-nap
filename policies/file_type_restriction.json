@@ -1,0 +1,27 @@
+{
+    "policy": {
+      "name": "policy_name",
+      "template": {
+        "name": "POLICY_TEMPLATE_NGINX_BASE"
+      },
+      "applicationLanguage": "utf-8",
+      "enforcementMode": "blocking",
+      "filetypes": [
+        {
+          "name": "txt",
+          "wildcardOrder": 0,
+          "type": "wildcard",
+          "allowed": true
+        }
+      ],
+      "blocking-settings": {
+        "violations": [
+          {
+            "name": "VIOL_FILETYPE",
+            "block": true,
+            "alarm": true
+          }
+        ]
+      }
+    }
+  }

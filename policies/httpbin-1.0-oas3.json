@@ -1,0 +1,349 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "httpbin",
+    "description": "An unofficial OpenAPI definition for [httpbin.org](https://httpbin.org).",
+    "version": "1.0-oas3"
+  },
+  "externalDocs": {
+    "url": "http://httpbin.org/legacy"
+  },
+  "paths": {
+    "/get": {
+      "get": {
+        "tags": [
+          "HTTP methods"
+        ],
+        "summary": "Returns the GET request's data. Accepts any query parameters and any headers.\n",
+        "parameters": [
+          {
+            "name": "freeform",
+            "in": "query",
+            "description": "Enter free-form query parameters in the JSON format `{ \"param1\": \"value1\", \"param2\": \"value2\", ... }`.\n\nNote that the parameters will be actually sent as `?param1=value1&param2=value2&...`\n",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/headers": {
+      "get": {
+        "summary": "Returns the request headers.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "headers"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "headers": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/delay/{n}": {
+      "get": {
+        "summary": "Delays responding for min(n, 10) seconds.",
+        "parameters": [
+          {
+            "name": "n",
+            "in": "path",
+            "description": "Response delay, in seconds.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "maximum": 10,
+              "minimum": 0,
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },    
+  "components": {
+    "schemas": {
+      "CommonResponse": {
+        "required": [
+          "args",
+          "headers",
+          "origin",
+          "url"
+        ],
+        "type": "object",
+        "properties": {
+          "args": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Query string parameters specified in the request URL."
+          },
+          "headers": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Headers (standard or custom) used in the request. Some typical headers are:\n  - Accept\n  - Accept-Encoding\n  - Content-Length\n  - Content-Type\n  - Host\n  - Origin\n  - Referred\n  - User-Agent\n"
+          },
+          "origin": {
+            "type": "string",
+            "description": "The origin IP from which the request was made.",
+            "example": "10.100.10.10, 10.100.10.44, 52.91.14.13"
+          },
+          "url": {
+            "type": "string",
+            "description": "The endpoint URL to which the request was made.",
+            "format": "uri",
+            "example": "https://httpbin.org/post"
+          }
+        },
+        "description": "Response returned by `/get`"
+      },
+      "PostResponse": {
+        "description": "Response returned by /post, /put, /patch and /delete",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CommonResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "data": {},
+              "files": {},
+              "form": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "description": "Form parameters specified in \"application/x-www-form-urlencoded\" and `multipart/form-data` requests.\n"
+              },
+              "json": {
+                "description": "JSON value sent in the payload. Can be object, array, string, number, boolean or `null`.\n",
+                "nullable": true
+              }
+            }
+          }
+        ]
+      },
+      "TimestampWrapper": {
+        "required": [
+          "timestamp"
+        ],
+        "type": "object",
+        "properties": {
+          "timestamp": {
+            "$ref": "#/components/schemas/Timestamp"
+          }
+        }
+      },
+      "Timestamp": {
+        "required": [
+          "epoch",
+          "iso8601",
+          "rfc2822",
+          "rfc3339",
+          "slang_date",
+          "slang_time"
+        ],
+        "type": "object",
+        "properties": {
+          "epoch": {
+            "type": "number",
+            "format": "double",
+            "example": 1498229228.0671656
+          },
+          "slang_date": {
+            "type": "string",
+            "example": "today"
+          },
+          "slang_time": {
+            "type": "string",
+            "example": "now"
+          },
+          "iso8601": {
+            "type": "string",
+            "example": "2017-06-23T14:47:08.067166Z"
+          },
+          "rfc2822": {
+            "type": "string",
+            "example": "Fri, 23 Jun 2017 14:47:08 GMT"
+          },
+          "rfc3339": {
+            "type": "string",
+            "example": "2017-06-23T14:47:08.06Z"
+          }
+        },
+        "example": {
+          "epoch": 1485183550.84644,
+          "slang_date": "Jan 23",
+          "slang_time": "4 months ago",
+          "iso8601": "2017-01-23T14:59:10.846440Z",
+          "rfc2822": "Mon, 23 Jan 2017 14:59:10 GMT",
+          "rfc3339": "2017-01-23T14:59:10.84Z"
+        }
+      }
+    },
+    "responses": {
+      "200BasicAuth": {
+        "description": "OK",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "authenticated": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "user": {
+                  "type": "string",
+                  "description": "The user name specified in the request."
+                }
+              }
+            }
+          }
+        }
+      },
+      "Image": {
+        "description": "OK",
+        "content": {
+          "image/png, image/jpeg, image/webp": {
+            "schema": {
+              "type": "string",
+              "format": "binary"
+            }
+          },
+          "image/svg+xml": {},
+          "image/svg": {}
+        }
+      },
+      "TimestampResponse": {
+        "description": "OK",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/TimestampWrapper"
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "user": {
+        "name": "user",
+        "in": "path",
+        "description": "Username. Use the same username in the path AND for authorization.",
+        "required": true,
+        "style": "simple",
+        "explode": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "password": {
+        "name": "password",
+        "in": "path",
+        "description": "Password. Use the same password in the path AND for authorization.",
+        "required": true,
+        "style": "simple",
+        "explode": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "freeFormQuery": {
+        "name": "freeform",
+        "in": "query",
+        "description": "Enter free-form query parameters in the JSON format `{ \"param1\": \"value1\", \"param2\": \"value2\", ... }`.\n\nNote that the parameters will be actually sent as `?param1=value1&param2=value2&...`\n",
+        "required": false,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    },
+    "examples": {
+      "headers": {
+        "value": {
+          "Accept": "*/*",
+          "Connection": "close",
+          "Host": "httpbin.org",
+          "User-Agent": "curl/7.37.0"
+        }
+      },
+      "Now": {
+        "value": {
+          "epoch": 1498229228.0671656,
+          "slang_date": "today",
+          "slang_time": "now",
+          "iso8601": "2017-06-23T14:47:08.067166Z",
+          "rfc2822": "Fri, 23 Jun 2017 14:47:08 GMT",
+          "rfc3339": "2017-06-23T14:47:08.06Z"
+        }
+      },
+      "DateInPast": {
+        "description": "Example of a date in the past",
+        "value": {
+          "epoch": "1485183550.84644,",
+          "slang_date\"": "Jan 23",
+          "slang_time\"": "4 months ago",
+          "iso8601": "2017-01-23T14:59:10.846440Z",
+          "rfc2822": "Mon, 23 Jan 2017 14:59:10 GMT",
+          "rfc3339": "2017-01-23T14:59:10.84Z"
+        }
+      }
+    },
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "description": "Use the same username and password as you will provide in path parameters.",
+        "scheme": "basic"
+      },
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  }
+}}

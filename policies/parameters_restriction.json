@@ -1,0 +1,66 @@
+{
+    "policy": {
+        "name": "user_defined_parameters_misc_test",
+        "template": {
+            "name": "POLICY_TEMPLATE_NGINX_BASE"
+        },
+        "applicationLanguage": "utf-8",
+        "enforcementMode": "blocking",
+        "blocking-settings": {
+            "violations": [
+                {
+                    "name": "VIOL_PARAMETER_EMPTY_VALUE",
+                    "alarm": true,
+                    "block": true
+                },
+                {
+                    "name": "VIOL_PARAMETER_REPEATED",
+                    "alarm": true,
+                    "block": true
+                },
+                {
+                    "name": "VIOL_MANDATORY_PARAMETER",
+                    "alarm": true,
+                    "block": true
+                },
+                {
+                    "name": "VIOL_PARAMETER",
+                    "alarm": true,
+                    "block": true
+                }
+            ]
+        },
+        "parameters": [
+            {
+                "name": "empty",
+                "type": "explicit",
+                "parameterLocation": "any",
+                "mandatory": false,
+                "allowEmptyValue": false,
+                "allowRepeatedParameterName": false,
+                "sensitiveParameter": false,
+                "valueType": "auto-detect"
+            },
+            {
+                "name": "repeated",
+                "type": "explicit",
+                "parameterLocation": "any",
+                "mandatory": false,
+                "allowEmptyValue": false,
+                "allowRepeatedParameterName": true,
+                "sensitiveParameter": false,
+                "valueType": "auto-detect"
+            },
+            {
+                "name": "mandatory",
+                "type": "explicit",
+                "parameterLocation": "any",
+                "mandatory": true,
+                "allowEmptyValue": false,
+                "allowRepeatedParameterName": false,
+                "sensitiveParameter": false,
+                "valueType": "auto-detect"
+            }
+        ]
+    }
+}

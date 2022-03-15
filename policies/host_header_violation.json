@@ -1,0 +1,34 @@
+{
+  "policy": {
+    "name": "policy-signature",
+    "template": {
+      "name": "POLICY_TEMPLATE_NGINX_BASE"
+    },
+    "applicationLanguage": "utf-8",
+    "enforcementMode": "blocking",
+    "signature-sets": [
+      {
+        "name": "All sigantures",
+        "alarm": true,
+        "block": true
+      }
+    ],
+    "blocking-settings": {
+      "http-protocols": [
+        {
+          "description": "Host header contains IP address"
+        },
+        {
+          "description": "Multiple host headers"
+        }
+      ],
+      "violations": [
+        {
+          "name": "VIOL_HTTP_PROTOCOL",
+          "block": true,
+          "alarm": true
+        }
+      ]
+    }
+  }
+}
