@@ -45,7 +45,7 @@ docker exec learning-nap_nginx_1 nginx -s reload
 ```
 NGINX NAP policy is a declarative policy, you may combine multiple controls into a single policy json file.
 
-Here are some tips on how to test the policy:
+Here are some tips on how to test the policy. You may also check the Kibana dashboard for the outcome.
 
 http://localhost:8000 (protected with NAP) http://localhost:8001 (unprotected), you may compare the outcome of with/without NAP policy.
 
@@ -77,7 +77,6 @@ http://localhost:8000 (protected with NAP) http://localhost:8001 (unprotected), 
   <br>curl http://localhost:8000/delay/adfdf   this will cause illegal param type
   
  
-
 # Dashboard
 Visit http://localhost:5601 and click into Discover or Dashboard to see the traffics/violations.
 
